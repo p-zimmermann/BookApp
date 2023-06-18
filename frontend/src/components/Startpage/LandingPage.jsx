@@ -18,7 +18,7 @@ export default function LandingPage() {
                 minWidth: "50%"
             }}
             >
-                <img src="../../../../img/library/jpgs/bookshelf-1.jpg" style={{width: '50vw'}}></img>
+                <img src="../../../../public/img/library/jpgs/bookshelf-1.jpg" style={{width: '50vw'}}></img>
             </Box>
             <Box
                 sx={{
