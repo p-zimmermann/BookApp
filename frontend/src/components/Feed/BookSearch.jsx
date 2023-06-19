@@ -2,17 +2,16 @@ import {
   Box,
   TextField,
   Button,
-  Card,
-  CardHeader,
-  CardContent,
-  CardMedia,
-  CardActions,
-  Collapse,
   Typography,
+  IconButton,
+  Modal,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useEffect, useState } from "react";
 import axios from "axios";
+
+import EditBook from "./EditBook.jsx";
 
 export default function BookSearch() {
   const [books, setBooks] = useState([]);
@@ -88,11 +87,15 @@ export default function BookSearch() {
     fetchBooks(searchText);
   };
 
-  //expandbutton
-  const [expanded, setExpanded] = useState(false);
+  //open modal of edit book
+  const [open, setOpen] = useState(false); // State to control the modal
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -116,20 +119,20 @@ export default function BookSearch() {
         sx={{
           display: "flex",
           flexDirection: "row",
-          flexWrap: "wrap"
+          flexWrap: "wrap",
         }}
       >
-        {books.map((books) => (
+        {books.map((books, index) => (
           <Box
             sx={{
               width: "20%",
-              padding: 2
+              padding: 2,
             }}
             key={books.id}
           >
-            <Typography>{books.volumeInfo.title}</Typography>
+            <Typography>{index+1}. {books.volumeInfo.title}</Typography>
             <Typography>
-              {books.volumeInfo.authors[0] ? books.volumeInfo.authors[0] : null}
+              {books.volumeInfo.authors && books.volumeInfo.authors[0] ? books.volumeInfo.authors[0] : null}
             </Typography>
             <Box sx={{}}>
               <img
@@ -141,8 +144,23 @@ export default function BookSearch() {
                 }
               ></img>
             </Box>
+            <IconButton onClick={handleOpen}>
+              <AddCircleIcon />
+            </IconButton>
           </Box>
         ))}
+
+        <Modal
+          open={open}
+          onClose={handleClose}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <EditBook modalIsOpen={open} closeModal={handleClose} books={books.volumeInfo} />
+        </Modal>
       </Box>
       <h2>Bestseller Books</h2>
       <ul>

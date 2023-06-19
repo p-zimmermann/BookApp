@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
    {/*  <Register></Register> */}
     {/* <FeedPage></FeedPage> */}
-  {/*   <SearchPage></SearchPage> */}
-    <LandingPage></LandingPage>
+    <SearchPage></SearchPage>
+  {/*   <LandingPage></LandingPage> */}
   </React.StrictMode>,
 )
