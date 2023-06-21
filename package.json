@@ -8,5 +8,9 @@
     "start": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm start\""
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@react-navigation/native": "^6.1.6",
+    "react-router-dom": "^6.13.0"
+  }
 }
