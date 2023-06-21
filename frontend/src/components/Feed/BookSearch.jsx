@@ -1,17 +1,8 @@
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  IconButton,
-  Modal,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { Box, TextField, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import EditBook from "./EditBook.jsx";
+import SearchResults from "./SearchResults.jsx";
 
 export default function BookSearch() {
   const [books, setBooks] = useState([]);
@@ -27,7 +18,7 @@ export default function BookSearch() {
           "https://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=" +
             nytimesKey
         );
-        console.log(response.data.results);
+        //console.log(response.data.results);
         setNytBooks(response.data.results);
       } catch (error) {
         console.error("Error fetching bestseller books:", error);
@@ -60,10 +51,6 @@ export default function BookSearch() {
           },
         }
       );
-      /*   setTimeout(() => {
-        setBooks(response.data.items);
-        handleBooksFetched(response.data.items);
-      }, 3000); */
       setBooks(response.data.items);
       handleBooksFetched(response.data.items);
       console.log(response.data.items);
@@ -86,18 +73,6 @@ export default function BookSearch() {
     console.log(searchText);
     fetchBooks(searchText);
   };
-
-  //open modal of edit book
-  const [open, setOpen] = useState(false); // State to control the modal
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
     <>
       <Box>
@@ -122,45 +97,9 @@ export default function BookSearch() {
           flexWrap: "wrap",
         }}
       >
-        {books.map((books, index) => (
-          <Box
-            sx={{
-              width: "20%",
-              padding: 2,
-            }}
-            key={books.id}
-          >
-            <Typography>{index+1}. {books.volumeInfo.title}</Typography>
-            <Typography>
-              {books.volumeInfo.authors && books.volumeInfo.authors[0] ? books.volumeInfo.authors[0] : null}
-            </Typography>
-            <Box sx={{}}>
-              <img
-                src={
-                  books.volumeInfo.imageLinks &&
-                  books.volumeInfo.imageLinks.thumbnail
-                    ? books.volumeInfo.imageLinks.thumbnail
-                    : null
-                }
-              ></img>
-            </Box>
-            <IconButton onClick={handleOpen}>
-              <AddCircleIcon />
-            </IconButton>
-          </Box>
-        ))}
-
-        <Modal
-          open={open}
-          onClose={handleClose}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <EditBook modalIsOpen={open} closeModal={handleClose} books={books.volumeInfo} />
-        </Modal>
+        {books.map((book, index) => {
+          return <SearchResults key={index} book={book} />;
+        })}
       </Box>
       <h2>Bestseller Books</h2>
       <ul>
