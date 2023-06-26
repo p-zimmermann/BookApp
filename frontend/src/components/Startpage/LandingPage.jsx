@@ -1,7 +1,7 @@
 import {Box, TextField} from '@mui/material';
 import LoginFields from './Login.jsx'
 
-export default function LandingPage() {
+export default function LandingPage({handleLogin}) {
 
 
     return (
@@ -18,7 +18,7 @@ export default function LandingPage() {
                 minWidth: "50%"
             }}
             >
-                <img src="../../../../public/img/library/jpgs/bookshelf-1.jpg" style={{width: '50vw'}}></img>
+                <img src="../../../../img/library/jpgs/bookshelf-1.jpg" style={{width: '50vw'}}></img>
             </Box>
             <Box
                 sx={{
@@ -28,7 +28,7 @@ export default function LandingPage() {
                     width: "50%"
                 }}
             >
-                <LoginFields></LoginFields>
+                <LoginFields handleLogin={handleLogin}></LoginFields>
             </Box>
         </Box>
         </>

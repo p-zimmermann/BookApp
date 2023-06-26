@@ -2,8 +2,11 @@ import { TextField, Typography, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import axios from "axios";
+//import jwt_decode from "jsonwebtoken";
 
-export default function Login() {
+
+
+export default function Login({handleLogin}) {
   const navigate = useNavigate();
   const formRef = useRef();
 
@@ -28,11 +31,11 @@ export default function Login() {
       const response = await axios (config);
       console.log(response);
       localStorage.setItem("token", response.data.token)
-      //navigate("/feed");
+      handleLogin()
+      navigate("/feed");
     } catch (error){
       console.log(error);
     }
-
   };
   const handleClickRegister = () => {
     navigate("/register");

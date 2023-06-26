@@ -14,7 +14,6 @@ export default function SearchResults({ index, book }) {
 
   const handleOpen = () => {
     setOpen(true);
-    document.getElementsById;
   };
 
   const handleClose = () => {
@@ -60,7 +59,7 @@ export default function SearchResults({ index, book }) {
           <EditBook
             modalIsOpen={open}
             closeModal={handleClose}
-            bookVolumeIfo={book.volumeInfo}
+            bookVolumeInfo={book.volumeInfo}
           />
         </Modal>
       </Box>

@@ -1,4 +1,5 @@
 import { Box, TextField, Input, InputLabel, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { useRef, useState } from "react";
@@ -24,6 +25,10 @@ export default function Register() {
   const handleInputChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
     console.log(event.target.value);
+  };
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/");
   };
 
   //axios request
@@ -127,7 +132,7 @@ export default function Register() {
             />
           </Box>
           <Box>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }} onClick={handleClick}>
               Register
             </Button>
           </Box>

@@ -39,6 +39,9 @@ export default function BookSearch() {
         console.error("Error fetching bestseller books:", error);
   } */
 
+  //get userID
+  const loggedUser = JSON.parse(localStorage.getItem("user"))
+
   //get book from google api
   const fetchBooks = async (value) => {
     try {
