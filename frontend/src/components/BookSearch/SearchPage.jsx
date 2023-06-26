@@ -16,9 +16,17 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BookSearch from './BookSearch.jsx';
+import { useNavigate } from "react-router-dom";
 
 
 export default function FeedPage() {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/feed");
+  };
+
+  //get userID
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
 
   return (
     <>
@@ -55,15 +63,25 @@ export default function FeedPage() {
             justifyContent: "flex-start",
           }}
         >
+          <Box sx={{
+            display: "flex",
+            flexDirection: "column",
+            minWidth: "15vw",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}>
           <Avatar
             size="md"
             sx={{
               m: 3,
               p: "1rem",
             }}
+            src={loggedUser.profilePicture}
           ></Avatar>
-          <Button variant="contained" sx={{ margin: 2 }}>
-            Profile
+          </Box>
+          
+          <Button variant="contained" sx={{ margin: 2 }} onClick={handleClick}>
+            Feed
           </Button>
         </Box>
       </Box>

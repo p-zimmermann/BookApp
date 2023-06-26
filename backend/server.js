@@ -68,6 +68,7 @@ const ToRead = mongoose.model("ToRead", toRead);
 const currentlyReading = new mongoose.Schema({
   isbn13: String,
   userId: String,
+  startdate: String,
 });
 const CurrentlyReading = mongoose.model("CurrentlyReading", currentlyReading);
 const library = new mongoose.Schema({
@@ -78,6 +79,9 @@ const Library = mongoose.model("Library", library);
 const alreadyRead = new mongoose.Schema({
   isbn13: String,
   userId: String,
+  startdate: String,
+  entdate: String,
+  review: String,
 });
 const AlreadyRead = mongoose.model("AlreadyRead", alreadyRead);
 
@@ -193,3 +197,45 @@ app.post("/toread", async (req, res) => {
     console.error("Error adding to database", error);
   }
 });
+app.post("/currentlyreading", async (req, res) => {
+  try {
+    console.log("Received data:", req.body);
+    /*  res.status(201).send("Works fine"); */
+    const { id, isbn13, startdate } = req.body;
+    //check if book already exists
+    const existsBook = await CurrentlyReading.findOne({ isbn13 });
+    if (existsBook) {
+      return res.status(409).send({ message: "Book already in list" });
+    }
+    // Create a new entry
+    const newToRead = await CurrentlyReading.create({
+      id: req.body.id,
+      isbn13: req.body.isbn13,
+      startdate: req.body.startdate
+    });
+    res.status(201).json({ newToRead });
+  } catch (error) {
+    console.error("Error adding to database", error);
+  }
+});
+app.post("/library", async (req, res) => {
+  try {
+    console.log("Received data:", req.body);
+    /*  res.status(201).send("Works fine"); */
+    const { id, isbn13, startdate } = req.body;
+    //check if book already exists
+    const existsBook = await Library.findOne({ isbn13 });
+    if (existsBook) {
+      return res.status(409).send({ message: "Book already in list" });
+    }
+    // Create a new entry
+    const newToRead = await Library.create({
+      id: req.body.id,
+      isbn13: req.body.isbn13,
+    });
+    res.status(201).json({ newToRead });
+  } catch (error) {
+    console.error("Error adding to database", error);
+  }
+});
+

@@ -17,33 +17,77 @@ export default function EditBook({ modalIsOpen, closeModal, bookVolumeInfo }) {
   //get userID
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
+  //add book to library database
+  const handleClickLibrary = async ({ bookVolumeInfo }) => {
+    const library = {
+      id: loggedUser._id,
+      isbn13: bookVolumeInfo.industryIdentifiers[0].identifier,
+    };
+    console.log(library);
+
+    const config = {
+      url: "http://localhost:3001/library",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: library,
+    };
+    try {
+      const response = await axios(config);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+//add book to library database
+const handleClickCurrentlyRead = async ({ bookVolumeInfo }) => {
+  const currentTimestamp = new Date().toLocaleString();
+  const currentlyReading = {
+    id: loggedUser._id,
+    isbn13: bookVolumeInfo.industryIdentifiers[0].identifier,
+    startdate: currentTimestamp
+  };
+  console.log(currentlyReading);
+
+  const config = {
+    url: "http://localhost:3001/currentlyreading",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: currentlyReading,
+  };
+  try {
+    const response = await axios(config);
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
   //add book toread database
-  const handleClickToRead = async({ bookVolumeInfo }) => {
+  const handleClickToRead = async ({ bookVolumeInfo }) => {
     const toReadBook = {
       id: loggedUser._id,
       isbn13: bookVolumeInfo.industryIdentifiers[0].identifier,
     };
-    console.log(toReadBook)
+    console.log(toReadBook);
 
     const config = {
       url: "http://localhost:3001/toread",
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      data: toReadBook
-    }
+      data: toReadBook,
+    };
     try {
       const response = await axios(config);
       console.log(response);
+    } catch (error) {
+      console.log(error);
     }
-    catch(error){
-      console.log(error)
-    }
-
   };
-
-
 
   function BookCoverDisplay({ bookVolumeInfo }) {
     if (bookVolumeInfo.imageLinks && bookVolumeInfo.imageLinks.thumbnail) {
@@ -81,10 +125,18 @@ export default function EditBook({ modalIsOpen, closeModal, bookVolumeInfo }) {
             p: 2,
           }}
         >
-          <Button variant="contained" sx={{ m: 1 }}>
+          <Button
+            variant="contained"
+            sx={{ m: 1 }}
+            onClick={() => handleClickLibrary({ bookVolumeInfo })}
+          >
             add to library
           </Button>
-          <Button variant="contained" sx={{ m: 1 }}>
+          <Button
+            variant="contained"
+            sx={{ m: 1 }}
+            onClick={() => handleClickCurrentlyRead({ bookVolumeInfo })}
+          >
             currently reading
           </Button>
           <Button
