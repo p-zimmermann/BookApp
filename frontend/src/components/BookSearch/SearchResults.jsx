@@ -7,7 +7,7 @@ import EditBook from "./EditBook.jsx";
 export default function SearchResults({ index, book }) {
   //const { book } = this.props;
 
-  console.log(book.volumeInfo);
+/*   console.log(book.volumeInfo); */
 
   //open modal of edit book
   const [open, setOpen] = useState(false); // State to control the modal

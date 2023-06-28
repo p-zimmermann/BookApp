@@ -61,7 +61,7 @@ const userData = new mongoose.Schema({
 const UserData = mongoose.model("UserData", userData);
 
 const toRead = new mongoose.Schema({
-  isbn13: String,
+  book: String,
   userId: String,
 });
 const ToRead = mongoose.model("ToRead", toRead);
@@ -71,11 +71,13 @@ const currentlyReading = new mongoose.Schema({
   startdate: String,
 });
 const CurrentlyReading = mongoose.model("CurrentlyReading", currentlyReading);
+
 const library = new mongoose.Schema({
   isbn13: String,
   userId: String,
 });
 const Library = mongoose.model("Library", library);
+
 const alreadyRead = new mongoose.Schema({
   isbn13: String,
   userId: String,
@@ -92,7 +94,6 @@ app.post(
   upload.single("profilePicture"),
   async (req, res) => {
     try {
-      console.log("Received data:", req.body);
       /*  res.status(201).send("Works fine"); */
       const { id, email, username } = req.body;
       const password = req.body.password;
@@ -179,9 +180,7 @@ app.get("/finduser", async (req, res) => {
 
 app.post("/toread", async (req, res) => {
   try {
-    console.log("Received data:", req.body);
-    /*  res.status(201).send("Works fine"); */
-    const { id, isbn13 } = req.body;
+    const { userId, isbn13 } = req.body;
     //check if book already exists
     const existsBook = await ToRead.findOne({ isbn13 });
     if (existsBook) {
@@ -189,7 +188,7 @@ app.post("/toread", async (req, res) => {
     }
     // Create a new entry
     const newToRead = await ToRead.create({
-      id: req.body.id,
+      userId: req.body.userId,
       isbn13: req.body.isbn13,
     });
     res.status(201).json({ newToRead });
@@ -197,43 +196,56 @@ app.post("/toread", async (req, res) => {
     console.error("Error adding to database", error);
   }
 });
+app.get("/currentlyreading", async (req, res) => {
+  try {
+    const { id } = req.query;
+    console.log("Received data CURRENTLY " + req.query)
+    const objectIdUserId = new ObjectId(id);
+    const bookToRead = await CurrentlyReading.find({ userId: objectIdUserId });
+    if (!bookToRead) {
+      return res.status(404).json({ message: "books not found" });
+    }
+    console.log(bookToRead);
+    res.send(bookToRead);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+
 app.post("/currentlyreading", async (req, res) => {
   try {
-    console.log("Received data:", req.body);
-    /*  res.status(201).send("Works fine"); */
-    const { id, isbn13, startdate } = req.body;
+    const { userId, isbn13, startdate } = req.body;
     //check if book already exists
     const existsBook = await CurrentlyReading.findOne({ isbn13 });
     if (existsBook) {
       return res.status(409).send({ message: "Book already in list" });
     }
     // Create a new entry
-    const newToRead = await CurrentlyReading.create({
-      id: req.body.id,
+    const currentlyReadingBook = await CurrentlyReading.create({
+      userId: req.body.userId,
       isbn13: req.body.isbn13,
       startdate: req.body.startdate
     });
-    res.status(201).json({ newToRead });
+    res.status(201).json({ currentlyReadingBook });
   } catch (error) {
     console.error("Error adding to database", error);
   }
 });
 app.post("/library", async (req, res) => {
   try {
-    console.log("Received data:", req.body);
-    /*  res.status(201).send("Works fine"); */
-    const { id, isbn13, startdate } = req.body;
+    const { userId, isbn13 } = req.body;
     //check if book already exists
     const existsBook = await Library.findOne({ isbn13 });
     if (existsBook) {
       return res.status(409).send({ message: "Book already in list" });
     }
     // Create a new entry
-    const newToRead = await Library.create({
-      id: req.body.id,
+    const newToLib = await Library.create({
+      userId: req.body.userId,
       isbn13: req.body.isbn13,
     });
-    res.status(201).json({ newToRead });
+    res.status(201).json({ newToLib });
   } catch (error) {
     console.error("Error adding to database", error);
   }

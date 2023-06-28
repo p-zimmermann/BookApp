@@ -6,7 +6,6 @@ import axios from "axios";
 
 export default function FeedPage({ handleLogout }) {
   const navigate = useNavigate();
-  const [user, setUser] = useState([]);
 
   const handleClick = () => {
     navigate("/search");
@@ -23,19 +22,46 @@ export default function FeedPage({ handleLogout }) {
     const payload = JSON.parse(atob(base64));
     const id = payload.id;
     const response = await axios(`http://localhost:3001/finduser?id=${id}`);
-    localStorage.setItem("user", JSON.stringify(response.data))
-    setUser(response.data);
-
-  
+    localStorage.setItem("user", JSON.stringify(response.data));
   };
 
-  useEffect(() => {
-    getUserData();
-  }, []);
+  const getToReadData = async () => {
+    try {
+      const response = await axios(
+        `http://localhost:3001/currentlyreading?id=${loggedUser._id}`
+      );
+      const toReadData = response.data.map((toreadBook) => {
+        return {
+          userId: toreadBook.userId,
+          isbn13: toreadBook.isbn13,
+        };
+      });
+      console.log(toReadData);
+      const fetchToRead = toReadData.map((item) => {
+        return axios
+          .get("https://www.googleapis.com/books/v1/volumes", {
+            params: {
+              q: item.isbn13,
+              key: "AIzaSyC_GqwBGc6ICB15i7B_V-oZj0KeWzE5WJQ",
+            },
+          })
+          .then((res) => {
+            setToReadBooks(toReadBooks => [...toReadBooks, res.data.items[0]]);
+          })
+          .catch((e) => console.error(e));
+      });
+      Promise.all(fetchToRead).then(console.log(toReadBooks));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const [toReadBooks, setToReadBooks] = useState([]);
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    getUserData(); 
+    getToReadData();
+  }, []);
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
 
   return (
     <>
@@ -65,7 +91,11 @@ export default function FeedPage({ handleLogout }) {
           <Button variant="contained" sx={{ margin: 5 }} onClick={handleClick}>
             Search
           </Button>
-          <AccordionShelve></AccordionShelve>
+          <AccordionShelve toReadBooks={toReadBooks}
+          sx={{
+            display: "flex"
+            
+          }}></AccordionShelve>
         </Box>
         <Box
           sx={{
@@ -81,7 +111,7 @@ export default function FeedPage({ handleLogout }) {
               m: 3,
               p: "1rem",
             }}
-            src={user.profilePicture}
+            src={loggedUser.profilePicture}
           ></Avatar>
           <Box>
             <Button variant="contained" sx={{ margin: 2 }}>

@@ -20,7 +20,7 @@ export default function EditBook({ modalIsOpen, closeModal, bookVolumeInfo }) {
   //add book to library database
   const handleClickLibrary = async ({ bookVolumeInfo }) => {
     const library = {
-      id: loggedUser._id,
+      userId: loggedUser._id.toString(),
       isbn13: bookVolumeInfo.industryIdentifiers[0].identifier,
     };
     console.log(library);
@@ -44,7 +44,7 @@ export default function EditBook({ modalIsOpen, closeModal, bookVolumeInfo }) {
 const handleClickCurrentlyRead = async ({ bookVolumeInfo }) => {
   const currentTimestamp = new Date().toLocaleString();
   const currentlyReading = {
-    id: loggedUser._id,
+    userId: loggedUser._id.toString(),
     isbn13: bookVolumeInfo.industryIdentifiers[0].identifier,
     startdate: currentTimestamp
   };
@@ -67,8 +67,9 @@ const handleClickCurrentlyRead = async ({ bookVolumeInfo }) => {
 };
   //add book toread database
   const handleClickToRead = async ({ bookVolumeInfo }) => {
+    console.log(loggedUser._id)
     const toReadBook = {
-      id: loggedUser._id,
+      userId: loggedUser._id.toString(),
       isbn13: bookVolumeInfo.industryIdentifiers[0].identifier,
     };
     console.log(toReadBook);

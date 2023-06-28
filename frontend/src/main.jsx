@@ -10,11 +10,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App/>
-   {/*  <Register></Register> */}
-    {/* <FeedPage></FeedPage> */}
-   {/*  <SearchPage></SearchPage> */}
-  {/*   <LandingPage></LandingPage> */}
-  </React.StrictMode>,
+ 
+    <App />
+   
+ 
 )
