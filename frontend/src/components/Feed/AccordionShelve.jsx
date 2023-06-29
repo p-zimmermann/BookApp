@@ -1,9 +1,12 @@
-import { Accordion, AccordionSummary, AccordionDetails, Box } from "@mui/material";
-import SearchResults from "../BookSearch/SearchResults";
+import {
+  Accordion,
+  AccordionSummary,
+  Box,
+} from "@mui/material";
+import ShowBook from "../BookUtils/ShowBook";
 import { useState } from "react";
-import axios from "axios";
 
-export default function AccordionShelve({ toReadBooks }) {
+export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
   const [expanded, setExpanded] = useState("panel1");
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -23,10 +26,21 @@ export default function AccordionShelve({ toReadBooks }) {
             flexWrap: "wrap",
           }}
         >
-            {toReadBooks.map((toReadBooks, index) => {
-            return <SearchResults key={index} book={toReadBooks} />;
+          {currentlyRead.map((currentlyRead, index) => {
+            return (
+              <>
+                <Box
+                  sx={{
+                    width: "20%",
+                    padding: 2,
+                  }}
+                  key={currentlyRead.id}
+                >
+                  <ShowBook key={index} book={currentlyRead} />
+                </Box>
+              </>
+            );
           })}
-          
         </Box>
       </Accordion>
       <Accordion
@@ -34,12 +48,58 @@ export default function AccordionShelve({ toReadBooks }) {
         onChange={handleChange("panel2")}
       >
         <AccordionSummary>To Read</AccordionSummary>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+          }}
+        >
+          {toRead.map((toRead, index) => {
+            return (
+              <>
+                <Box
+                  sx={{
+                    width: "20%",
+                    padding: 2,
+                  }}
+                  key={toRead.id}
+                >
+                  <ShowBook key={index} book={toRead} />
+                </Box>
+              </>
+            );
+          })}
+        </Box>
       </Accordion>
       <Accordion
         expanded={expanded === "panel3"}
         onChange={handleChange("panel3")}
       >
         <AccordionSummary>Library</AccordionSummary>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+          }}
+        >
+          {libBook.map((libBook, index) => {
+            return (
+              <>
+                <Box
+                  sx={{
+                    width: "20%",
+                    padding: 2,
+                  }}
+                  key={libBook.id}
+                >
+                  <ShowBook key={index} book={libBook} />
+                </Box>
+              </>
+            );
+          })}
+        </Box>
       </Accordion>
     </>
   );

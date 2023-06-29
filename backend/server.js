@@ -61,7 +61,7 @@ const userData = new mongoose.Schema({
 const UserData = mongoose.model("UserData", userData);
 
 const toRead = new mongoose.Schema({
-  book: String,
+  isbn13: String,
   userId: String,
 });
 const ToRead = mongoose.model("ToRead", toRead);
@@ -181,6 +181,7 @@ app.get("/finduser", async (req, res) => {
 app.post("/toread", async (req, res) => {
   try {
     const { userId, isbn13 } = req.body;
+    console.log(req.body)
     //check if book already exists
     const existsBook = await ToRead.findOne({ isbn13 });
     if (existsBook) {
@@ -196,12 +197,12 @@ app.post("/toread", async (req, res) => {
     console.error("Error adding to database", error);
   }
 });
-app.get("/currentlyreading", async (req, res) => {
+app.get("/toread", async (req, res) => {
   try {
     const { id } = req.query;
     console.log("Received data CURRENTLY " + req.query)
     const objectIdUserId = new ObjectId(id);
-    const bookToRead = await CurrentlyReading.find({ userId: objectIdUserId });
+    const bookToRead = await ToRead.find({ userId: objectIdUserId });
     if (!bookToRead) {
       return res.status(404).json({ message: "books not found" });
     }
@@ -232,6 +233,23 @@ app.post("/currentlyreading", async (req, res) => {
     console.error("Error adding to database", error);
   }
 });
+
+app.get("/currentlyreading", async (req, res) => {
+  try {
+    const { id } = req.query;
+    console.log("Received data CURRENTLY " + req.query)
+    const objectIdUserId = new ObjectId(id);
+    const bookCurrently = await CurrentlyReading.find({ userId: objectIdUserId });
+    if (!bookCurrently) {
+      return res.status(404).json({ message: "books not found" });
+    }
+    console.log(bookCurrently);
+    res.send(bookCurrently);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 app.post("/library", async (req, res) => {
   try {
     const { userId, isbn13 } = req.body;
@@ -248,6 +266,22 @@ app.post("/library", async (req, res) => {
     res.status(201).json({ newToLib });
   } catch (error) {
     console.error("Error adding to database", error);
+  }
+});
+
+app.get("/library", async (req, res) => {
+  try {
+    const { id } = req.query;
+    console.log("Received data CURRENTLY " + req.query)
+    const objectIdUserId = new ObjectId(id);
+    const bookLib = await Library.find({ userId: objectIdUserId });
+    if (!bookLib) {
+      return res.status(404).json({ message: "books not found" });
+    }
+    console.log(bookLib);
+    res.send(bookLib);
+  } catch (error) {
+    console.error(error);
   }
 });
 

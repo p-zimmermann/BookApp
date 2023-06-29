@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-export default function fetchGoogleBooks(){
+export default function fetchGoogleBooks(value){
 
     const [books, setBooks] = useState([]);
     //value can be anything
@@ -21,5 +22,9 @@ export default function fetchGoogleBooks(){
           console.error("Error fetching bestseller books:", error);
         }
       };
-    return [fetchBooks]
+      useEffect(() => {
+        fetchBooks(value)
+      }, []);
+
+      return {books}
 }

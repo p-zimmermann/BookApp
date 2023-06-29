@@ -1,5 +1,6 @@
 import { Box, Typography, IconButton, Modal } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import ShowBook from "../BookUtils/ShowBook.jsx";
 import { useEffect, useState } from "react";
 
 import EditBook from "./EditBook.jsx";
@@ -29,21 +30,7 @@ export default function SearchResults({ index, book }) {
         }}
         key={book.id}
       >
-        <Typography>{book.volumeInfo.title}</Typography>
-        <Typography>
-          {book.volumeInfo.authors && book.volumeInfo.authors[0]
-            ? book.volumeInfo.authors[0]
-            : null}
-        </Typography>
-        <Box sx={{}}>
-          <img
-            src={
-              book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail
-                ? book.volumeInfo.imageLinks.thumbnail
-                : null
-            }
-          ></img>
-        </Box>
+        <ShowBook book={book}/> 
         <IconButton onClick={handleOpen}>
           <AddCircleIcon />
         </IconButton>

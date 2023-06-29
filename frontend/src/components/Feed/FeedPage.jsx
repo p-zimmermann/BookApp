@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import useFetchByUserId from "../customHooks/useFetchByUserId.js";
+
 export default function FeedPage({ handleLogout }) {
   const navigate = useNavigate();
-
+  
   const handleClick = () => {
     navigate("/search");
   };
@@ -15,53 +17,39 @@ export default function FeedPage({ handleLogout }) {
     handleLogout();
   };
 
-  const getUserData = async () => {
-    const token = localStorage.getItem("token");
-    const base64Url = token.split(".")[1]; // Extract the payload (middle part of the token)
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/"); // Replace URL-safe characters
-    const payload = JSON.parse(atob(base64));
-    const id = payload.id;
-    const response = await axios(`http://localhost:3001/finduser?id=${id}`);
-    localStorage.setItem("user", JSON.stringify(response.data));
-  };
-
-  const getToReadData = async () => {
-    try {
-      const response = await axios(
-        `http://localhost:3001/currentlyreading?id=${loggedUser._id}`
-      );
-      const toReadData = response.data.map((toreadBook) => {
-        return {
-          userId: toreadBook.userId,
-          isbn13: toreadBook.isbn13,
-        };
-      });
-      console.log(toReadData);
-      const fetchToRead = toReadData.map((item) => {
-        return axios
-          .get("https://www.googleapis.com/books/v1/volumes", {
-            params: {
-              q: item.isbn13,
-              key: "AIzaSyC_GqwBGc6ICB15i7B_V-oZj0KeWzE5WJQ",
-            },
-          })
-          .then((res) => {
-            setToReadBooks(toReadBooks => [...toReadBooks, res.data.items[0]]);
-          })
-          .catch((e) => console.error(e));
-      });
-      Promise.all(fetchToRead).then(console.log(toReadBooks));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const [toReadBooks, setToReadBooks] = useState([]);
-
-  useEffect(() => {
+  /* useEffect(() => {
     getUserData(); 
     getToReadData();
-  }, []);
+  }, []); */
+
   const loggedUser = JSON.parse(localStorage.getItem("user"));
+
+  const [currentlyRead, setCurrentlyRead] = useState([]);
+  const [toRead, setToRead] = useState([]);
+  const [libBook, setLibBook] = useState([]);
+  //get books by userid
+  async function waitForBooks() {
+    const currentlyreading = "currentlyreading";
+    const data = await useFetchByUserId(currentlyreading);
+    console.log(data.toReadBooks);
+    setCurrentlyRead(data.toReadBooks);
+  }
+  async function waitForLibBooks() {
+    const library = "library";
+    const dataLib = await useFetchByUserId(library);
+    console.log(dataLib.toReadBooks);
+    setLibBook(dataLib.toReadBooks);
+  }
+  async function waitForToReadBooks() {
+    const toread = "toread";
+    const dataToRead = await useFetchByUserId(toread);
+    console.log(dataToRead.toReadBooks);
+    setToRead(dataToRead.toReadBooks);
+  }
+
+  waitForBooks();
+  waitForLibBooks();
+  waitForToReadBooks();
 
   return (
     <>
@@ -91,11 +79,14 @@ export default function FeedPage({ handleLogout }) {
           <Button variant="contained" sx={{ margin: 5 }} onClick={handleClick}>
             Search
           </Button>
-          <AccordionShelve toReadBooks={toReadBooks}
-          sx={{
-            display: "flex"
-            
-          }}></AccordionShelve>
+          <AccordionShelve
+            currentlyRead={currentlyRead}
+            toRead={toRead}
+            libBook={libBook}
+            sx={{
+              display: "flex",
+            }}
+          ></AccordionShelve>
         </Box>
         <Box
           sx={{

@@ -2,13 +2,12 @@ import { Box, TextField, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchResults from "./SearchResults.jsx";
-import fetchGoogleBooks from "../customHooks/fetchGoogleBooks.js";
+
 
 export default function BookSearch() {
   const [books, setBooks] = useState([]);
   const [nytBooks, setNytBooks] = useState([]);
   const nytimesKey = "3QdQnrcpPLUzdrgAFwoJtsqbLYlOsHWF";
-  const googleBooksKey = "AIzaSyC_GqwBGc6ICB15i7B_V-oZj0KeWzE5WJQ";
 
   // get nyt bestseller list
   useEffect(() => {
