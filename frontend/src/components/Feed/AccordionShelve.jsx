@@ -1,9 +1,9 @@
 import { Accordion, AccordionSummary, Box, IconButton, Modal } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ShowBook from "../BookUtils/ShowBook";
-import EditCurrentlyReadingBook from "./EditCurrentlyReadingBook";
 import AccordionShelveCurrently from "./AccordionShelveCurrently";
 import AccordionShelveToRead from "./AccordionShelveToRead";
+import AccordionShelveLibrary from "./AccordioanShelveLibrary";
 import { useState } from "react";
 
 export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
@@ -91,17 +91,7 @@ export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
         >
           {libBook.map((libBook, index) => {
             return (
-              <>
-                <Box
-                  sx={{
-                    width: "20%",
-                    padding: 2,
-                  }}
-                  key={libBook.id}
-                >
-                  <ShowBook key={index} book={libBook} />
-                </Box>
-              </>
+                <AccordionShelveLibrary key={index} libBook={libBook}/>
             );
           })}
         </Box>
