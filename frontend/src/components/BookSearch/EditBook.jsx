@@ -22,6 +22,9 @@ export default function EditBook({ modalIsOpen, closeModal, bookVolumeInfo }) {
     const library = {
       userId: loggedUser._id.toString(),
       isbn13: bookVolumeInfo.industryIdentifiers[0].identifier,
+      startdate: "",
+      enddate: "",
+      review: "",
     };
     console.log(library);
 
@@ -46,7 +49,8 @@ const handleClickCurrentlyRead = async ({ bookVolumeInfo }) => {
   const currentlyReading = {
     userId: loggedUser._id.toString(),
     isbn13: bookVolumeInfo.industryIdentifiers[0].identifier,
-    startdate: currentTimestamp
+    startdate: currentTimestamp,
+    enddate: "",
   };
   console.log(currentlyReading);
 

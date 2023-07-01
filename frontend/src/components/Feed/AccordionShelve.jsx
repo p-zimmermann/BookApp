@@ -1,12 +1,21 @@
-import {
-  Accordion,
-  AccordionSummary,
-  Box,
-} from "@mui/material";
+import { Accordion, AccordionSummary, Box, IconButton, Modal } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ShowBook from "../BookUtils/ShowBook";
+import EditCurrentlyReadingBook from "./EditCurrentlyReadingBook";
+import AccordionShelveCurrently from "./AccordionShelveCurrently";
 import { useState } from "react";
 
 export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
+  const [open, setOpen] = useState(false); // State to control the modal
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const [expanded, setExpanded] = useState("panel1");
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -29,15 +38,7 @@ export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
           {currentlyRead.map((currentlyRead, index) => {
             return (
               <>
-                <Box
-                  sx={{
-                    width: "20%",
-                    padding: 2,
-                  }}
-                  key={currentlyRead.id}
-                >
-                  <ShowBook key={index} book={currentlyRead} />
-                </Box>
+                <AccordionShelveCurrently key={index} currentlyRead={currentlyRead}/>
               </>
             );
           })}

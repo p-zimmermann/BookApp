@@ -17,10 +17,21 @@ export default function FeedPage({ handleLogout }) {
     handleLogout();
   };
 
-  /* useEffect(() => {
-    getUserData(); 
-    getToReadData();
-  }, []); */
+  const getUserData = async () => {
+    const token = localStorage.getItem("token");
+    const base64Url = token.split(".")[1]; // Extract the payload (middle part of the token)
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/"); // Replace URL-safe characters
+    const payload = JSON.parse(atob(base64));
+    const id = payload.id;
+    const response = await axios(`http://localhost:3001/finduser?id=${id}`);
+    localStorage.setItem("user", JSON.stringify(response.data))
+    setUser(response.data);
+
+
+  };
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 

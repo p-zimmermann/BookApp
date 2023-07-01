@@ -69,12 +69,16 @@ const currentlyReading = new mongoose.Schema({
   isbn13: String,
   userId: String,
   startdate: String,
+  enddate: String,
 });
 const CurrentlyReading = mongoose.model("CurrentlyReading", currentlyReading);
 
 const library = new mongoose.Schema({
   isbn13: String,
   userId: String,
+  startdate: String,
+  enddate: String,
+  review: String,
 });
 const Library = mongoose.model("Library", library);
 
@@ -82,7 +86,7 @@ const alreadyRead = new mongoose.Schema({
   isbn13: String,
   userId: String,
   startdate: String,
-  entdate: String,
+  enddate: String,
   review: String,
 });
 const AlreadyRead = mongoose.model("AlreadyRead", alreadyRead);
@@ -226,7 +230,8 @@ app.post("/currentlyreading", async (req, res) => {
     const currentlyReadingBook = await CurrentlyReading.create({
       userId: req.body.userId,
       isbn13: req.body.isbn13,
-      startdate: req.body.startdate
+      startdate: req.body.startdate,
+      enddate: req.body.enddate,
     });
     res.status(201).json({ currentlyReadingBook });
   } catch (error) {
@@ -250,6 +255,20 @@ app.get("/currentlyreading", async (req, res) => {
   }
 });
 
+app.delete("/currentlyreading", async (req, res) => {
+  try {
+    console.log("Received data DELETE " + req.body)
+    console.log(req.body._id)
+    const bookCurrently = await CurrentlyReading.findByIdAndDelete(req.body._id);
+    if (!bookCurrently) {
+      return res.status(404).json({ message: "books not found" });
+    }
+    return res.status(200).json({ success: true, msg: 'Product Deleted' });
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 app.post("/library", async (req, res) => {
   try {
     const { userId, isbn13 } = req.body;
@@ -262,6 +281,9 @@ app.post("/library", async (req, res) => {
     const newToLib = await Library.create({
       userId: req.body.userId,
       isbn13: req.body.isbn13,
+      startdate: req.body.startdate,
+      enddate: req.body.enddate,
+      review: req.body.review,
     });
     res.status(201).json({ newToLib });
   } catch (error) {
