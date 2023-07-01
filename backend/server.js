@@ -216,7 +216,19 @@ app.get("/toread", async (req, res) => {
     console.error(error);
   }
 });
-
+app.delete("/toread", async (req, res) => {
+  try {
+    console.log("Received data DELETE " + req.body)
+    console.log(req.body._id)
+    const bookToRead = await ToRead.findByIdAndDelete(req.body._id);
+    if (!bookToRead) {
+      return res.status(404).json({ message: "books not found" });
+    }
+    return res.status(200).json({ success: true, msg: 'Product Deleted' });
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 app.post("/currentlyreading", async (req, res) => {
   try {

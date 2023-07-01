@@ -3,6 +3,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ShowBook from "../BookUtils/ShowBook";
 import EditCurrentlyReadingBook from "./EditCurrentlyReadingBook";
 import AccordionShelveCurrently from "./AccordionShelveCurrently";
+import AccordionShelveToRead from "./AccordionShelveToRead";
 import { useState } from "react";
 
 export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
@@ -37,9 +38,7 @@ export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
         >
           {currentlyRead.map((currentlyRead, index) => {
             return (
-              <>
                 <AccordionShelveCurrently key={index} currentlyRead={currentlyRead}/>
-              </>
             );
           })}
         </Box>
@@ -56,7 +55,7 @@ export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
             flexWrap: "wrap",
           }}
         >
-          {toRead.map((toRead, index) => {
+       {/*    {toRead.map((toRead, index) => {
             return (
               <>
                 <Box
@@ -69,6 +68,11 @@ export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
                   <ShowBook key={index} book={toRead} />
                 </Box>
               </>
+            );
+          })} */}
+          {toRead.map((toRead, index) => {
+            return (
+                <AccordionShelveToRead key={index} toRead={toRead}/>
             );
           })}
         </Box>
