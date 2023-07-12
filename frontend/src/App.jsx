@@ -11,9 +11,17 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+import {ThemeProvider} from '@mui/material/styles'
+import themeOptions from "./customTheme/customTheme.js";
 
 export default function App() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+/*   const [isLoggedIn, setLoggedIn] = useState(false); */
+
+  const [isLoggedIn, setLoggedIn] = useState(() => {
+    const token = localStorage.getItem("token");
+    return !!token; // convert token value to a boolean
+  });
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -31,6 +39,7 @@ export default function App() {
 
   return (
     <Router>
+      <ThemeProvider theme={themeOptions}>
       <div>
         <Routes>
           <Route exact path="/" element={<LandingPage handleLogin={handleLogin} />} />
@@ -39,6 +48,7 @@ export default function App() {
           <Route path="/search" element={<SearchPage />} />
         </Routes>
       </div>
+      </ThemeProvider>
     </Router>
   );
 }

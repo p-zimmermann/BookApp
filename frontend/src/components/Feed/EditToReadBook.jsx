@@ -2,6 +2,8 @@ import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 
+import showNotification from "../notification/showNotification";
+
 export default function EditToReadBook({
   modalIsOpen,
   closeModal,
@@ -17,7 +19,10 @@ export default function EditToReadBook({
     setOpen(false);
   };
 
-  //console.log(bookVolumeInfo);
+  const handleRefresh = () => {
+    // Trigger a reload of the whole page
+    window.location.reload()
+  };
 
   //add book to library database and delete from currently reading
   const [selectedBook, setSelectedBook] = useState([]);
@@ -32,15 +37,6 @@ export default function EditToReadBook({
     const responseToRead = await axios(
       `http://localhost:3001/toread?id=${id}`
     );
-    //console.log(responseCurrentlyRead.data);
-    //find book based on isbn13
-    /*   responseCurrentlyRead.data.map((item) => {
-      if(item.isbn13 == bookVolumeInfo.industryIdentifiers[0].identifier) {
-        setSelectedBook(item)
-        console.log(item)
-      }
-    }
-    ) */
 
     const selectedBookPromise = new Promise(async (resolve) => {
       for (const item of responseToRead.data) {
@@ -75,7 +71,6 @@ export default function EditToReadBook({
     };
     try {
       const response = await axios(config);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -91,41 +86,29 @@ export default function EditToReadBook({
     };
     try {
       const res = await axios(configDelete);
-      if (res.data.success) {
-        alert(res.data.msg);
-      }
+      showNotification("Book moved to Currently Reading","normal");
+      handleRefresh()
     } catch (err) {
-      console.error(err);
+      showNotification(`${err.response.data.message}`,"red");
+      /* console.error(err); */
     }
-
-    //add reupload to page
-    /* window.location.reload(false);*/
   };
 
-  //add book toread database
+  //delete book from toread database
   const handleClickDeleteToRead = async ({ bookVolumeInfo }) => {
     const loggedUser = JSON.parse(localStorage.getItem("user"));
     const loggedUserId = loggedUser._id;
 
-    //get info from currentlyRead database
+    //get info from toRead database
     const responseToRead = await axios(
       `http://localhost:3001/toread?id=${loggedUser._id}`
     );
     console.log(responseToRead.data);
     //find book based on isbn13
-    /*   responseCurrentlyRead.data.map((item) => {
-        if(item.isbn13 == bookVolumeInfo.industryIdentifiers[0].identifier) {
-          setSelectedBook(item)
-          console.log(item)
-        }
-      }
-      ) */
-
     const selectedBookPromise = new Promise(async (resolve) => {
       for (const item of responseToRead.data) {
         if (item.isbn13 === bookVolumeInfo.industryIdentifiers[0].identifier) {
           setSelectedBook(item);
-          console.log(item);
           resolve(item);
           break;
         }
@@ -144,12 +127,19 @@ export default function EditToReadBook({
     };
     try {
       const res = await axios(configDelete);
-      if (res.data.success) {
+      /* if (res.data.success) {
         alert(res.data.msg);
-      }
-    } catch (err) {
-      console.error(err);
-    }
+      } */
+     //get new info from toRead database and update
+      const responseToRead = await axios(
+      `http://localhost:3001/toread?id=${loggedUser._id}`
+      );
+      showNotification("Book deleted","normal");
+      handleRefresh()
+    }  catch (err) {
+      showNotification(`${err.responseToRead.data.message}`,"red");
+      
+    } 
   };
 
   function BookCoverDisplay({ bookVolumeInfo }) {

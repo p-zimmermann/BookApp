@@ -28,24 +28,6 @@ export default function AccordionShelveLibrary ({ index, libBook }) {
             key={libBook.id}
           >
             <ShowBook key={index} book={libBook} />
-           {/*  <IconButton onClick={handleOpen}>
-              <AddCircleIcon />
-            </IconButton> */}
-           {/*  <Modal
-              open={open}
-              onClose={handleClose}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <EditToReadBook
-                modalIsOpen={open}
-                closeModal={handleClose}
-                bookVolumeInfo={toRead.volumeInfo}
-              />
-            </Modal> */}
           </Box>
         </>
       );

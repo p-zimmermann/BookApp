@@ -15,23 +15,8 @@ export default function FeedPage({ handleLogout }) {
 
   const handleClickLogout = () => {
     handleLogout();
+    localStorage.clear()
   };
-
-  const getUserData = async () => {
-    const token = localStorage.getItem("token");
-    const base64Url = token.split(".")[1]; // Extract the payload (middle part of the token)
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/"); // Replace URL-safe characters
-    const payload = JSON.parse(atob(base64));
-    const id = payload.id;
-    const response = await axios(`http://localhost:3001/finduser?id=${id}`);
-    localStorage.setItem("user", JSON.stringify(response.data))
-    setUser(response.data);
-
-
-  };
-  useEffect(() => {
-    getUserData();
-  }, []);
 
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -41,20 +26,17 @@ export default function FeedPage({ handleLogout }) {
   //get books by userid
   async function waitForBooks() {
     const currentlyreading = "currentlyreading";
-    const data = await useFetchByUserId(currentlyreading);
-    console.log(data.toReadBooks);
+    const data = await useFetchByUserId(currentlyreading);   
     setCurrentlyRead(data.toReadBooks);
   }
   async function waitForLibBooks() {
     const library = "library";
     const dataLib = await useFetchByUserId(library);
-    console.log(dataLib.toReadBooks);
     setLibBook(dataLib.toReadBooks);
   }
   async function waitForToReadBooks() {
     const toread = "toread";
     const dataToRead = await useFetchByUserId(toread);
-    console.log(dataToRead.toReadBooks);
     setToRead(dataToRead.toReadBooks);
   }
 
@@ -81,7 +63,7 @@ export default function FeedPage({ handleLogout }) {
             display: "flex",
             flexDirection: "column",
             minWidth: "60vw",
-            height: "100vh",
+            minHeight: "100vh",
             bgcolor: "primary.light",
             justifyContent: "flex-start",
             padding: 10,

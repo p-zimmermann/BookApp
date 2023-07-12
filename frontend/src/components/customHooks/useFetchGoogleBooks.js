@@ -17,7 +17,7 @@ export default function fetchGoogleBooks(value){
             }
           );
           setBooks(response.data.items);
-          console.log(response.data.items);
+         
         } catch (error) {
           console.error("Error fetching bestseller books:", error);
         }

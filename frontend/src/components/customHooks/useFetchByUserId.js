@@ -11,7 +11,7 @@ export default async function useFetchByUserId(booklist) {
   const [toReadBooks, setToReadBooks] = useState([]);
 
   const fetchData = async (booklist) => {
-    console.log(booklist)
+    
     try {
       const response = await axios(
         `http://localhost:3001/${booklist}?id=${id}`
@@ -23,7 +23,7 @@ export default async function useFetchByUserId(booklist) {
         };
       });
       setBookdata(toReadData);
-      console.log(toReadData)
+      
       const fetchToRead = toReadData.map((item) => {
         return axios
           .get("https://www.googleapis.com/books/v1/volumes", {
@@ -33,7 +33,7 @@ export default async function useFetchByUserId(booklist) {
             },
           })
           .then((res) => {
-            console.log(res)
+           /*  console.log(res) */
             setToReadBooks(toReadBooks => [...toReadBooks, res.data.items[0]]);
           })
           .catch((e) => console.error(e));

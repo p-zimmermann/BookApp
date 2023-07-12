@@ -55,24 +55,9 @@ export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
             flexWrap: "wrap",
           }}
         >
-       {/*    {toRead.map((toRead, index) => {
-            return (
-              <>
-                <Box
-                  sx={{
-                    width: "20%",
-                    padding: 2,
-                  }}
-                  key={toRead.id}
-                >
-                  <ShowBook key={index} book={toRead} />
-                </Box>
-              </>
-            );
-          })} */}
           {toRead.map((toRead, index) => {
             return (
-                <AccordionShelveToRead key={index} toRead={toRead}/>
+                <AccordionShelveToRead key={index} toRead={toRead} />
             );
           })}
         </Box>

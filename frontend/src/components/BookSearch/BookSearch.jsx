@@ -55,7 +55,7 @@ export default function BookSearch() {
       );
       setBooks(response.data.items);
       handleBooksFetched(response.data.items);
-      console.log(response.data.items);
+      /* console.log(response.data.items); */
     } catch (error) {
       console.error("Error fetching bestseller books:", error);
     }
@@ -69,15 +69,17 @@ export default function BookSearch() {
   const [searchText, setSearchText] = useState("");
   const handleChange = (event) => {
     setSearchText(event.target.value);
-    console.log(searchText);
+   
   };
   const onClick = () => {
-    console.log(searchText);
+  
     fetchBooks(searchText);
   };
   return (
     <>
-      <Box>
+      <Box sx={{
+        
+      }}>
         <TextField
           label="search for title"
           /* value='search' */

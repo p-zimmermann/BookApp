@@ -47,6 +47,7 @@ export default function FeedPage() {
             display: "flex",
             flexDirection: "column",
             minWidth: "60vw",
+            minHeight: "100vh",
           
             bgcolor: "primary.light",
             justifyContent: "flex-start",

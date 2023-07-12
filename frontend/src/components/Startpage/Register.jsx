@@ -4,6 +4,8 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { useRef, useState } from "react";
 
+import showNotification from "../notification/showNotification";
+
 export default function Register() {
   const formRef = useRef();
 
@@ -24,24 +26,19 @@ export default function Register() {
 
   const handleInputChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
-    console.log(event.target.value);
   };
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/");
-  };
 
   //axios request
   const registerUser = async (e) => {
     e.preventDefault();
-    console.log(user.email);
     const userForm = new FormData();
     userForm.append("id", uuidv4());
     userForm.append("email", user.email);
     userForm.append("password", user.password);
     userForm.append("username", user.username);
     userForm.append("profilePicture", selectedFile);
-    console.log(userForm);
+    /* console.log(userForm); */
     const config = {
       url: `http://localhost:3001/register`,
       method: "POST",
@@ -52,11 +49,13 @@ export default function Register() {
     };
     try {
       const response = await axios(config);
-      console.log(response);
+      showNotification("User registered - log in now", "normal");
+      navigate("/");
       if (response.status !== 201) {
         throw new Error("Failed to post");
       }
     } catch (error) {
+      showNotification(`${error.response.data.message}`,"red");
       if (error.response.status === 429) {
         console.log(error.response.data);
       } else {
@@ -132,7 +131,7 @@ export default function Register() {
             />
           </Box>
           <Box>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }} onClick={handleClick}>
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
               Register
             </Button>
           </Box>

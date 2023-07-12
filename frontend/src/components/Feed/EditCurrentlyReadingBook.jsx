@@ -2,6 +2,8 @@ import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 
+import showNotification from "../notification/showNotification";
+
 export default function EditCurrentlyReadingBook({
   modalIsOpen,
   closeModal,
@@ -17,7 +19,10 @@ export default function EditCurrentlyReadingBook({
     setOpen(false);
   };
 
-  //console.log(bookVolumeInfo);
+  const handleRefresh = () => {
+    // Trigger a reload of the whole page
+    window.location.reload()
+  };
 
   //add book to library database and delete from currently reading
   const [selectedBook, setSelectedBook] = useState([]);
@@ -32,15 +37,6 @@ export default function EditCurrentlyReadingBook({
     const responseCurrentlyRead = await axios(
       `http://localhost:3001/currentlyreading?id=${id}`
     );
-    //console.log(responseCurrentlyRead.data);
-    //find book based on isbn13
-    /*   responseCurrentlyRead.data.map((item) => {
-      if(item.isbn13 == bookVolumeInfo.industryIdentifiers[0].identifier) {
-        setSelectedBook(item)
-        console.log(item)
-      }
-    }
-    ) */
 
     const selectedBookPromise = new Promise(async (resolve) => {
       for (const item of responseCurrentlyRead.data) {
@@ -92,15 +88,13 @@ export default function EditCurrentlyReadingBook({
     };
     try {
       const res = await axios(configDelete);
-      if (res.data.success) {
-        alert(res.data.msg);
-      }
+      showNotification("Book moved to Library","normal");
+      handleRefresh()
     } catch (err) {
-      console.error(err);
+      showNotification(`${err.response.data.message}`,"red");
+      /* console.error(err); */
     }
 
-    //add reupload to page
-    /* window.location.reload(false);*/
   };
 
   //add book toread database
@@ -112,21 +106,11 @@ export default function EditCurrentlyReadingBook({
     const responseCurrentlyRead = await axios(
       `http://localhost:3001/currentlyreading?id=${loggedUser._id}`
     );
-    //console.log(responseCurrentlyRead.data);
-    //find book based on isbn13
-    /*   responseCurrentlyRead.data.map((item) => {
-        if(item.isbn13 == bookVolumeInfo.industryIdentifiers[0].identifier) {
-          setSelectedBook(item)
-          console.log(item)
-        }
-      }
-      ) */
 
     const selectedBookPromise = new Promise(async (resolve) => {
       for (const item of responseCurrentlyRead.data) {
         if (item.isbn13 === bookVolumeInfo.industryIdentifiers[0].identifier) {
           setSelectedBook(item);
-          console.log(item);
           resolve(item);
           break;
         }
@@ -145,11 +129,11 @@ export default function EditCurrentlyReadingBook({
     };
     try {
       const res = await axios(configDelete);
-      if (res.data.success) {
-        alert(res.data.msg);
-      }
+      showNotification("Book deleted","normal");
+      handleRefresh()
     } catch (err) {
-      console.error(err);
+      showNotification(`${err.response.data.message}`,"red");
+      /* console.error(err); */
     }
   };
 

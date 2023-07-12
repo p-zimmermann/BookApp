@@ -2,6 +2,8 @@ import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 
+import showNotification from "../notification/showNotification";
+
 export default function EditBook({ modalIsOpen, closeModal, bookVolumeInfo }) {
   const [open, setOpen] = useState(true); // State to control the modal
 
@@ -13,7 +15,6 @@ export default function EditBook({ modalIsOpen, closeModal, bookVolumeInfo }) {
     setOpen(false);
   };
 
-  console.log(bookVolumeInfo);
   //get userID
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -26,7 +27,6 @@ export default function EditBook({ modalIsOpen, closeModal, bookVolumeInfo }) {
       enddate: "",
       review: "",
     };
-    console.log(library);
 
     const config = {
       url: "http://localhost:3001/library",
@@ -38,9 +38,10 @@ export default function EditBook({ modalIsOpen, closeModal, bookVolumeInfo }) {
     };
     try {
       const response = await axios(config);
-      console.log(response);
+      showNotification("Book added to Library", "normal");
+     
     } catch (error) {
-      console.log(error);
+      showNotification(`${error.response.data.message}`,"red");
     }
   };
 //add book to library database
@@ -52,7 +53,6 @@ const handleClickCurrentlyRead = async ({ bookVolumeInfo }) => {
     startdate: currentTimestamp,
     enddate: "",
   };
-  console.log(currentlyReading);
 
   const config = {
     url: "http://localhost:3001/currentlyreading",
@@ -64,19 +64,17 @@ const handleClickCurrentlyRead = async ({ bookVolumeInfo }) => {
   };
   try {
     const response = await axios(config);
-    console.log(response);
+    showNotification("Book added to Currently Reading", "normal");
   } catch (error) {
-    console.log(error);
+    showNotification(`${error.response.data.message}`,"red");
   }
 };
   //add book toread database
   const handleClickToRead = async ({ bookVolumeInfo }) => {
-    console.log(loggedUser._id)
     const toReadBook = {
       userId: loggedUser._id.toString(),
       isbn13: bookVolumeInfo.industryIdentifiers[0].identifier,
     };
-    console.log(toReadBook);
 
     const config = {
       url: "http://localhost:3001/toread",
@@ -88,9 +86,9 @@ const handleClickCurrentlyRead = async ({ bookVolumeInfo }) => {
     };
     try {
       const response = await axios(config);
-      console.log(response);
+      showNotification("Book added to To Read List", "normal");
     } catch (error) {
-      console.log(error);
+      showNotification(`${error.response.data.message}`,"red");
     }
   };
 
@@ -119,7 +117,7 @@ const handleClickCurrentlyRead = async ({ bookVolumeInfo }) => {
           display: "flex",
           flexDirection: "row",
           height: 250,
-          bgcolor: "secondary.main",
+          bgcolor: "secondary.light",
         }}
       >
         {BookCoverDisplay({ bookVolumeInfo })}
@@ -132,6 +130,7 @@ const handleClickCurrentlyRead = async ({ bookVolumeInfo }) => {
         >
           <Button
             variant="contained"
+            
             sx={{ m: 1 }}
             onClick={() => handleClickLibrary({ bookVolumeInfo })}
           >

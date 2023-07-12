@@ -1,7 +1,10 @@
-import { TextField, Typography, Button, Box } from "@mui/material";
+import { TextField, Typography, Button, Box, InputAdornment,
+  IconButton, } from "@mui/material";
+import { Visibility, VisibilityOff, Close } from '@mui/icons-material';
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import axios from "axios";
+import showNotification from "../notification/showNotification";
 //import jwt_decode from "jsonwebtoken";
 
 
@@ -18,7 +21,6 @@ export default function Login({handleLogin}) {
       email: loginForm.email.value,
       password: loginForm.password.value,
     }
-    console.log(data)
     const config = {
       url: "http://localhost:3001/login",
       method: "POST",
@@ -29,12 +31,19 @@ export default function Login({handleLogin}) {
     }
     try {
       const response = await axios (config);
-      console.log(response);
+      showNotification(`${response.data.message}`, "normal");
       localStorage.setItem("token", response.data.token)
+      const token = localStorage.getItem("token");
+      const base64Url = token.split(".")[1]; // Extract the payload (middle part of the token)
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/"); // Replace URL-safe characters
+      const payload = JSON.parse(atob(base64));
+      const id = payload.id;
+      const responseUser = await axios(`http://localhost:3001/finduser?id=${id}`);
+      localStorage.setItem("user", JSON.stringify(responseUser.data))
       handleLogin()
       navigate("/feed");
     } catch (error){
-      console.log(error);
+      showNotification(`${error.response.data.message}`,"red");
     }
   };
   const handleClickRegister = () => {
@@ -45,7 +54,10 @@ export default function Login({handleLogin}) {
   const loginRequest = (e) => {
     e.preventDefault();
   }
-
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <>
     <Box
@@ -67,6 +79,19 @@ export default function Login({handleLogin}) {
         label="Password"
         name="password"
         variant="outlined"
+        type={showPassword ? 'text' : 'password'}
+        InputProps={{
+          endAdornment:
+          <InputAdornment position="end">
+            <IconButton
+              edge="end"
+              aria-label="toggle password visibility"
+              onClick={handleClickShowPassword}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>
+        }}
       />
 
       <Button
