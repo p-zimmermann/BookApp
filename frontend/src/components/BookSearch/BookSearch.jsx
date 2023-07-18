@@ -1,4 +1,4 @@
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SearchResults from "./SearchResults.jsx";
@@ -72,7 +72,6 @@ export default function BookSearch() {
    
   };
   const onClick = () => {
-  
     fetchBooks(searchText);
   };
   return (
@@ -93,19 +92,23 @@ export default function BookSearch() {
         </Button>
       </Box>
 
-      <h2>Results</h2>
+      <Typography variant="h4" sx={{my: 3}} >Results</Typography>
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
           flexWrap: "wrap",
+          my: 3,
         }}
       >
-        {books.map((book, index) => {
+        {books ? (books.map((book, index) => { 
           return <SearchResults key={index} book={book} />;
-        })}
+        })) : (
+          <Typography>No Search Results</Typography>
+        )
+      }
       </Box>
-      <h2>Bestseller Books</h2>
+      <Typography variant="h4" sx={{my: 3}}>Current NYT Bestseller Books</Typography>
       <ul>
         {nytBooks.map((nytBooks) => (
           <li key={nytBooks.id}>{nytBooks.book_details[0].title}</li>

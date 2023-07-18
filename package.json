@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-navigation/native": "^6.1.6",
     "bcrypt": "^5.0.1",
+    "react-chartjs-2": "^5.2.0",
     "react-router-dom": "^6.13.0",
     "react-toastify": "^9.1.3"
   },

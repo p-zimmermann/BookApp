@@ -18,6 +18,10 @@ export default function FeedPage({ handleLogout }) {
     localStorage.clear()
   };
 
+  const handleClickProfile = () => {
+    navigate("/profile")
+  }
+
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
   const [currentlyRead, setCurrentlyRead] = useState([]);
@@ -98,7 +102,7 @@ export default function FeedPage({ handleLogout }) {
             src={loggedUser.profilePicture}
           ></Avatar>
           <Box>
-            <Button variant="contained" sx={{ margin: 2 }}>
+            <Button variant="contained" sx={{ margin: 2 }} onClick={handleClickProfile}>
               Profile
             </Button>
           </Box>

@@ -11,13 +11,16 @@ export default function ShowBook ({book}) {
             ? book.volumeInfo.authors[0]
             : null}
         </Typography>
-        <Box sx={{}}>
+        <Box sx={{
+          
+        }}>
           <img
             src={
               book.volumeInfo && book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail
                 ? book.volumeInfo.imageLinks.thumbnail
-                : null
+                : "../../../img/buch_platzhalter.png"
             }
+            width="70%"
           ></img>
         </Box>
         </Box>

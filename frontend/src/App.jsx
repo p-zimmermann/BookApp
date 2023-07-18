@@ -4,6 +4,7 @@ import LandingPage from "./components/Startpage/LandingPage.jsx";
 import Register from "./components/Startpage/Register.jsx";
 import FeedPage from "./components/Feed/FeedPage.jsx";
 import SearchPage from "./components/BookSearch/SearchPage.jsx";
+import ProfilePage from './components/ProfilPage/ProfilePage.jsx'
 import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -46,6 +47,7 @@ export default function App() {
           <Route path="/feed" element={ isLoggedIn ? <FeedPage handleLogout={handleLogout}/> : <Navigate to ="/"/>} />
           <Route path="/register" element={<Register />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/profile" element={<ProfilePage />} /> 
         </Routes>
       </div>
       </ThemeProvider>

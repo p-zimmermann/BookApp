@@ -1,4 +1,4 @@
-import { Accordion, AccordionSummary, Box, IconButton, Modal } from "@mui/material";
+import { Accordion, AccordionSummary, Box, IconButton, Modal, Typography } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ShowBook from "../BookUtils/ShowBook";
 import AccordionShelveCurrently from "./AccordionShelveCurrently";
@@ -28,7 +28,7 @@ export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
         expanded={expanded === "panel1"}
         onChange={handleChange("panel1")}
       >
-        <AccordionSummary>Currently Reading</AccordionSummary>
+        <AccordionSummary><Typography>Currently Reading</Typography></AccordionSummary>
         <Box
           sx={{
             display: "flex",
@@ -47,7 +47,9 @@ export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
         expanded={expanded === "panel2"}
         onChange={handleChange("panel2")}
       >
-        <AccordionSummary>To Read</AccordionSummary>
+        <AccordionSummary>
+          <Typography>To Read</Typography>
+        </AccordionSummary>
         <Box
           sx={{
             display: "flex",
@@ -66,7 +68,7 @@ export default function AccordionShelve({ currentlyRead, toRead, libBook }) {
         expanded={expanded === "panel3"}
         onChange={handleChange("panel3")}
       >
-        <AccordionSummary>Library</AccordionSummary>
+        <AccordionSummary><Typography>Library</Typography></AccordionSummary>
         <Box
           sx={{
             display: "flex",

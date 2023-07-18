@@ -107,7 +107,7 @@ const handleClickCurrentlyRead = async ({ bookVolumeInfo }) => {
           </Box>
         </>
       );
-    } else null;
+    } else  return <img src="../../../img/buch_platzhalter.png"></img>;
   }
 
   return (
@@ -117,7 +117,9 @@ const handleClickCurrentlyRead = async ({ bookVolumeInfo }) => {
           display: "flex",
           flexDirection: "row",
           height: 250,
-          bgcolor: "secondary.light",
+          bgcolor: "primary.light",
+          alignItems: "center",
+          p: 1
         }}
       >
         {BookCoverDisplay({ bookVolumeInfo })}
