@@ -7,37 +7,70 @@ import SearchResults from "./SearchResults.jsx";
 export default function BookSearch() {
   const [books, setBooks] = useState([]);
   const [nytBooks, setNytBooks] = useState([]);
+  const [nytCover, setNytCover] = useState([]);
   const nytimesKey = "3QdQnrcpPLUzdrgAFwoJtsqbLYlOsHWF";
+  const googleBooksKey =  "AIzaSyC_GqwBGc6ICB15i7B_V-oZj0KeWzE5WJQ";
 
+  const fetchNYTBooks = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=" +
+          nytimesKey
+      );
+      //console.log(response.data.results);
+     /*  setNytBooks(response.data.results); */
+      console.log(response.data.results)
+      getCover(response.data.results)
+    } catch (error) {
+      console.error("Error fetching bestseller books:", error);
+    }
+  };
   // get nyt bestseller list
   useEffect(() => {
-    const fetchNYTBooks = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=" +
-            nytimesKey
-        );
-        //console.log(response.data.results);
-        setNytBooks(response.data.results);
-      } catch (error) {
-        console.error("Error fetching bestseller books:", error);
-      }
-    };
     fetchNYTBooks();
+    
   }, []);
   // get book cover from nyt bestseller list
-  /*  async function getCover(id, isbn) {
-    try {
-        const response = await axios.get(
-            'https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn + "&key=" + googleBooksKey
-        );
-        console.log(reponse.items)
-        var img = response.items[0].volumeInfo.imageLinks.thumbnail;
-        
-    } catch (error) {
-        console.error("Error fetching bestseller books:", error);
-  } */
+  async function getCover(nytBooks) {
+    const nytBookCover = nytBooks.map((nytBook)=>{
+      return axios
+      .get(
+        'https://www.googleapis.com/books/v1/volumes', 
+        {
+          params: {
+            q: `isbn:${nytBook.isbns[0].isbn13}`,
+            key: "AIzaSyC_GqwBGc6ICB15i7B_V-oZj0KeWzE5WJQ",
+          },
+        })
+      .then((res) => {
+        /*  console.log(res) */
+        console.log(res)
+        setNytCover(nytCover => [...nytCover, res.data.items[0].volumeInfo.imageLinks.thumbnail]);
+        setNytBooks(nytBooks => [...nytBooks, res.data.items[0].volumeInfo.title])
+       })
+       .catch((e) => console.error(e));
+    });
+    Promise.all(nytBookCover).then(value => console.log(value))
+  }
 
+  /*   nytBooks.map((nytBook) => {
+      try {
+        const response = await axios.get(
+            'https://www.googleapis.com/books/v1/volumes', 
+            {
+              params: {
+                q: `isbn:${nytBook.isbns[0].isbn13}`,
+                key: "AIzaSyC_GqwBGc6ICB15i7B_V-oZj0KeWzE5WJQ",
+              },
+            }
+        );
+        console.log(response.data.items[0].volumeInfo.imageLinks.thumbnail)
+        setNytCover(nytCover => [...nytCover, response.data.items[0].volumeInfo.imageLinks.thumbnail])
+      } catch (error) {
+        console.error("Error fetching book cover:", error);
+    }
+  })
+  } */
   //get userID
   const loggedUser = JSON.parse(localStorage.getItem("user"))
 
@@ -110,15 +143,19 @@ export default function BookSearch() {
       </Box>
       <Typography variant="h4" sx={{my: 3}}>Current NYT Bestseller Books</Typography>
       <ul>
-        {nytBooks.map((nytBooks) => (
-          <li key={nytBooks.id}>{nytBooks.book_details[0].title}</li>
-        ))}
+        {nytCover.map((bookCover, index) => (
+          <>
+          <li key={bookCover.id}>
+            <Typography>{nytBooks[index]}</Typography>
+          </li>
+            <img src={bookCover}></img>
+          </>
+          
+          ))}
       </ul>
-      {/* <p>
-          {nytBooks.map((nytBooks) => (
-                getCover(nytBooks.id, nytBooks.data.isbns[0].isbn10)
-            ))}
-            </p> */}
+      {}
+           
     </>
   );
 }
+

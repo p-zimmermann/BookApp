@@ -59,17 +59,18 @@ export default function ProfilePage({ handleLogout }) {
             ></Avatar>
             <Typography variant="h2">{loggedUser.username}</Typography>
           </Box>
-          
-          <Typography variant="h3">
+
+          <Typography variant="h4">
             Wow! Look at all the books you've already added to your account.
           </Typography>
-          <Box sx={{ 
-            display: "flex",
-            alignItems: "center"
-          }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <DataPieChart />
           </Box>
-         
         </Box>
         <Box
           sx={{
@@ -87,10 +88,16 @@ export default function ProfilePage({ handleLogout }) {
             }}
             src={loggedUser.profilePicture}
           ></Avatar>
-          <Box><Button variant="contained" sx={{ margin: 2 }} onClick={handleClick}>
-            Feed
-          </Button></Box>
-          
+          <Box>
+            <Button
+              variant="contained"
+              sx={{ margin: 2 }}
+              onClick={handleClick}
+            >
+              Feed
+            </Button>
+          </Box>
+
           <Box>
             <Button
               variant="contained"
