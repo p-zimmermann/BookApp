@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function ProfilePage({ handleLogout }) {
   const navigate = useNavigate();
+  
   const handleClickLogout = () => {
     handleLogout();
     localStorage.clear();
@@ -66,7 +67,9 @@ export default function ProfilePage({ handleLogout }) {
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
+              justifyContent: "center",
+              width: "60vw",
+              height: "60vh",
             }}
           >
             <DataPieChart />

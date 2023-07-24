@@ -3,7 +3,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ShowBook from "../BookUtils/ShowBook.jsx";
 import { useState } from "react";
 
-import EditToReadBook from "./EditToReadBook.jsx";
+import EditLibraryBook from "./EditLibraryBook.jsx";
 
 export default function AccordionShelveLibrary ({ index, libBook }) {
 
@@ -28,6 +28,24 @@ export default function AccordionShelveLibrary ({ index, libBook }) {
             key={libBook.id}
           >
             <ShowBook key={index} book={libBook} />
+            <IconButton onClick={handleOpen}>
+              <AddCircleIcon />
+            </IconButton>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <EditLibraryBook
+                modalIsOpen={open}
+                closeModal={handleClose}
+                bookVolumeInfo={libBook.volumeInfo}
+              />
+            </Modal>
           </Box>
         </>
       );

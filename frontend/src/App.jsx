@@ -51,7 +51,7 @@ export default function App() {
           <Route path="/feed" element={ isLoggedIn ? <FeedPage handleLogout={handleLogout}/> : <Navigate to ="/"/>} />
           <Route path="/register" element={<Register />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/profile" element={<ProfilePage />} /> 
+          <Route path="/profile" element={isLoggedIn ? <ProfilePage handleLogout={handleLogout}/> : <Navigate to ="/"/>} /> 
           <Route path="/reset-password" element={<ResetPage />} /> 
           <Route path="/reset-password-mail" element={<VerifyReset />} /> 
           <Route path="/reset-newpassword" element={<SetPassword />} /> 
