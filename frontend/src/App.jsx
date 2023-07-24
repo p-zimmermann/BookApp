@@ -5,6 +5,10 @@ import Register from "./components/Startpage/Register.jsx";
 import FeedPage from "./components/Feed/FeedPage.jsx";
 import SearchPage from "./components/BookSearch/SearchPage.jsx";
 import ProfilePage from './components/ProfilPage/ProfilePage.jsx'
+import ResetPage from "./components/ResetLogin/ResetPage.jsx";
+import VerifyReset from "./components/ResetLogin/VerifyReset.jsx";
+import SetPassword from "./components/ResetLogin/SetPassword.jsx";
+
 import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -48,6 +52,9 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/profile" element={<ProfilePage />} /> 
+          <Route path="/reset-password" element={<ResetPage />} /> 
+          <Route path="/reset-password-mail" element={<VerifyReset />} /> 
+          <Route path="/reset-newpassword" element={<SetPassword />} /> 
         </Routes>
       </div>
       </ThemeProvider>

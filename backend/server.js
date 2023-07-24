@@ -13,6 +13,7 @@ const jwt = require("jsonwebtoken"); //library for login
 app.use(express.json());
 //express limit
 const limiter = require("express-rate-limit");
+const nodemailer = require('nodemailer');
 app.use("/uploads", express.static("uploads"));
 const limit = limiter({
   windowMs: 15 * 60 * 1000,
@@ -319,3 +320,76 @@ app.get("/library", async (req, res) => {
   }
 });
 
+//reset password and send mail
+
+app.post("/resetpassword", async(req, res, next) => {
+  const {email} = req.body
+  console.log(email)
+
+  //check if user with mail exists
+  try{
+    const user = await UserData.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    console.log(user);
+    //create unique 6 digit code
+    const code = Math.floor(100000 + Math.random() * 900000);
+    //send email to all possible email engines with code
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD
+      }
+    });
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: "Reset Password",
+      text: `Your reset code is ${code}`
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if(error){
+        console.log(error);
+        return res.status(500).send({message: "Internal Server Error"});
+      } else {
+        console.log("Email sent: " + info.response);
+        //set token with email
+        const token = jwt.sign({email: email}, process.env.ACCESS_TOKEN_SECRET);
+        return res.send({message: "Email sent", token: token, code: code});
+      }
+    }
+    )
+      }
+  catch(error){
+    console.log(error)
+  }
+})
+
+app.post("/newpassword", async(req, res) => {
+  const password = req.body.password;
+  const token = req.headers.authorization.split(" ")[1];
+  if(!password || !token){
+    res.status(404).send({message: "Unvalid input"});
+  }
+  try {
+    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    console.log(decodedToken);
+    const existUser = UserData.findOne({email: decodedToken.email});
+    if(!existUser){
+      return res.status(409).send({message: "User does not exist"});
+  }
+  //hash password
+  const hashedPassword = await bcrypt.hash(password, 10);
+  //update user password
+  const user = await UserData.findOneAndUpdate({email: decodedToken.email}, {password: hashedPassword});
+  if(!user){
+    return res.status(404).send({message: "User not found"});
+  }
+    res.status(200).send({message: "Password updated!"});
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({message: "Internal Server Error"});
+  }
+})

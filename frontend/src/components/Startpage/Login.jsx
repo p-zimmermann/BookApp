@@ -1,7 +1,7 @@
 import { TextField, Typography, Button, Box, InputAdornment,
-  IconButton, } from "@mui/material";
+  IconButton} from "@mui/material";
 import { Visibility, VisibilityOff, Close } from '@mui/icons-material';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import axios from "axios";
 import showNotification from "../notification/showNotification";
@@ -115,6 +115,11 @@ export default function Login({handleLogin}) {
       >
         Register
       </Button>
+      <Link to="/reset-password"
+        sx={{ mt: 3 }}
+      >
+        Forget Password? Click here
+      </Link>
     </>
   );
 }
