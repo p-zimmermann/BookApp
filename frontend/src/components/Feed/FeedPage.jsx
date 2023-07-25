@@ -1,4 +1,4 @@
-import { Box, Button, Avatar } from "@mui/material";
+import { Box, Button, Avatar, Typography } from "@mui/material";
 import AccordionShelve from "./AccordionShelve.jsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -68,12 +68,14 @@ export default function FeedPage({ handleLogout }) {
             flexDirection: "column",
             minWidth: "60vw",
             minHeight: "100vh",
-            bgcolor: "primary.light",
+            bgcolor: "secondary.light",
             justifyContent: "flex-start",
+            
             padding: 10,
           }}
         >
-          <Button variant="contained" sx={{ margin: 5 }} onClick={handleClick}>
+          <Typography variant="h4" align="center">Welcome to your BookApp</Typography>
+          <Button variant="contained" sx={{ margin: 5, minWidth:"40vw" }} onClick={handleClick}>
             Search
           </Button>
           <AccordionShelve

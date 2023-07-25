@@ -13,6 +13,9 @@ export default function ProfilePage({ handleLogout }) {
   const handleClick = () => {
     navigate("/feed");
   };
+  const handleClickSearch =() => {
+    navigate("/search")
+  }
   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
   return (
@@ -35,10 +38,10 @@ export default function ProfilePage({ handleLogout }) {
             flexDirection: "column",
             minWidth: "60vw",
             minHeight: "100vh",
-            bgcolor: "primary.light",
+            bgcolor: "secondary.light",
             justifyContent: "flex-start",
             alignItems: "baseline",
-            padding: 10,
+            padding: 5,
           }}
         >
           <Box
@@ -94,17 +97,20 @@ export default function ProfilePage({ handleLogout }) {
           <Box>
             <Button
               variant="contained"
-              sx={{ margin: 2 }}
+              sx={{ margin: 2,
+                minWidth: '95px' }}
               onClick={handleClick}
             >
               Feed
             </Button>
           </Box>
-
+          <Button variant="contained" sx={{ margin: 2, minWidth: '95px' }} onClick={handleClickSearch}>
+            Search
+          </Button>
           <Box>
             <Button
               variant="contained"
-              sx={{ margin: 2 }}
+              sx={{ margin: 2, minWidth: '95px' }}
               onClick={handleClickLogout}
             >
               Logout

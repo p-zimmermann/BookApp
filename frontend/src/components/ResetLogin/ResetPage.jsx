@@ -49,7 +49,7 @@ export default function ResetPage(){
         ref={formRef}
         width="100vw"
         height="100vh"
-        backgroundColor= "primary.light"
+        backgroundColor= "secondary.light"
         onSubmit ={(e) => onSubmitReset(e, formRef.current, setResetCode)}
 
         >

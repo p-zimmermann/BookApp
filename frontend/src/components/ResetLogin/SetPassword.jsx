@@ -73,7 +73,7 @@ export default function SetPassword(){
         ref={formRef}
         width="100vw"
         height="100vh"
-        backgroundColor= "primary.light"
+        backgroundColor= "secondary.light"
         onSubmit= {(e) => onSubmitChangePassword(e, formRef.current, equal, emailToken, setEmailToken)}
         >
             <Typography variant="h4" sx={{m: 5}}>Type in your new password</Typography>

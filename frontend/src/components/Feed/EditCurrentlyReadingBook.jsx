@@ -162,7 +162,9 @@ export default function EditCurrentlyReadingBook({
           display: "flex",
           flexDirection: "row",
           height: 250,
-          bgcolor: "secondary.main",
+          bgcolor: "secondary.light",
+          alignItems: "center",
+          p: 1
         }}
       >
         {BookCoverDisplay({ bookVolumeInfo })}

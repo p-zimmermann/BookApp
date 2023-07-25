@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 
+import {Typography} from "@mui/material";
+
 /* import { DataPieChart } from "./DataPieChart"; */
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
@@ -51,10 +53,17 @@ export default function DataPieChart() {
       },
     ],
   };
-
-  return (
-    <>
-      <Pie data={DataPieChart} />
-    </>
-  );
+  {
+    if (numToRead == 0 && numLib == 0 && numCurrent == 0) {
+      return <Typography sx={{
+        margin: 5
+      }}>You have no saved books yet. Navigate to the Search Page and start adding Books to your Library! </Typography>;
+    } else {
+      return (
+        <>
+          <Pie data={DataPieChart} />
+        </>
+      );
+    }
+  }
 }

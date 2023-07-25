@@ -18,7 +18,7 @@ export default function LandingPage({handleLogin}) {
                 minWidth: "50%"
             }}
             >
-                <img src="../../../../img/library/jpgs/bookshelf-1.jpg" style={{width: '50vw'}}></img>
+                <img src="../../../../img/library/jpgs/bookshelf-1.jpg" style={{width: '50vw', height: '100vh'}}></img>
             </Box>
             <Box
                 sx={{

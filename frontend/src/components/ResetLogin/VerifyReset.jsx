@@ -34,7 +34,7 @@ export default function VerifyReset () {
         ref={formRef}
         width="100vw"
         height="100vh"
-        backgroundColor= "primary.light"
+        backgroundColor= "secondary.light"
         onSubmit ={(e) => onSubmitCode(e, formRef.current, setResetAllowed)}
         >
             <Typography variant="h4" sx={{m: 5}}>Type in your code you received</Typography>

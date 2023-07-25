@@ -5,13 +5,13 @@ const themeOptions = createTheme ({
       mode: 'light',
       primary: {
         main: '#893618',
-        light: '#D68567',
-        dark: '#572310',
+        light: '#A05E46',
+        dark: '#5F2510',
       },
       secondary: {
-        main: '#C8B3E6',
-        dark: '#9C8BB3',
-        light: '#D5CAE6',
+        main: '#D65527',
+        dark: '#DE7752',
+        light: '#D6A08D',
       },
     },
   }) 
