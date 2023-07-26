@@ -50,7 +50,6 @@ const upload = multer({ storage });
 //profile database mongoose schema
 
 const userData = new mongoose.Schema({
-  userId: String,
   email: String,
   password: String,
   profilePicture: String,
@@ -100,9 +99,9 @@ app.post(
   async (req, res) => {
     try {
       /*  res.status(201).send("Works fine"); */
-      const { id, email, username } = req.body;
+      const {email, username } = req.body;
       const password = req.body.password;
-      if (!id || !email || !username || !password) {
+      if (!email || !username || !password) {
         return res.status(404).send({ message: "Please fill out all fields!" });
       }
 
@@ -118,7 +117,6 @@ app.post(
 
       // Create a new user document in the database
       const newUser = await UserData.create({
-        id: req.body.id,
         email: req.body.email,
         username: req.body.username,
         password: hashedPassword,

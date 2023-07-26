@@ -1,7 +1,8 @@
-import { Box, TextField, Input, InputLabel, Button } from "@mui/material";
+import { Box, TextField, Input, InputLabel, Button, InputAdornment,
+  IconButton } from "@mui/material";
+import { Visibility, VisibilityOff, Close } from '@mui/icons-material';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 import { useRef, useState } from "react";
 
 import showNotification from "../notification/showNotification";
@@ -17,11 +18,9 @@ export default function Register() {
   };
 
   const [user, setUser] = useState({
-    id: "",
     email: "",
     password: "",
     username: "",
-    profilePicture: "",
   });
 
   const handleInputChange = (event) => {
@@ -33,12 +32,12 @@ export default function Register() {
   const registerUser = async (e) => {
     e.preventDefault();
     const userForm = new FormData();
-    userForm.append("id", uuidv4());
+    /* console.log(user) */
     userForm.append("email", user.email);
     userForm.append("password", user.password);
     userForm.append("username", user.username);
     userForm.append("profilePicture", selectedFile);
-    /* console.log(userForm); */
+   /*  console.log(userForm); */
     const config = {
       url: `http://localhost:3001/register`,
       method: "POST",
@@ -63,6 +62,10 @@ export default function Register() {
       }
     }
   };
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <>
@@ -80,7 +83,7 @@ export default function Register() {
         >
           <img
             src="../../../../img/library/jpgs/bookshelf-1.jpg"
-            style={{ width: "50vw" }}
+            style={{width: '50vw', height: '100vh'}}
           ></img>
         </Box>
         <Box
@@ -110,6 +113,19 @@ export default function Register() {
               name="password"
               variant="outlined"
               onChange={handleInputChange}
+              type={showPassword ? 'text' : 'password'}
+              InputProps={{
+                endAdornment:
+                <InputAdornment position="end">
+                  <IconButton
+                    edge="end"
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }}
             />
             <TextField
               fullWidth

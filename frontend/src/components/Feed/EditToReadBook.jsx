@@ -24,7 +24,7 @@ export default function EditToReadBook({
     window.location.reload()
   };
 
-  //add book to library database and delete from currently reading
+  //add book to currently reading database and delete from to read
   const [selectedBook, setSelectedBook] = useState([]);
   const handleClickToReadToCurrently = async ({ bookVolumeInfo }) => {
     const token = localStorage.getItem("token");
@@ -33,7 +33,7 @@ export default function EditToReadBook({
     const payload = JSON.parse(atob(base64));
     const id = payload.id;
 
-    //get info from currentlyRead database
+    //get info from toRead database
     const responseToRead = await axios(
       `http://localhost:3001/toread?id=${id}`
     );
@@ -51,7 +51,7 @@ export default function EditToReadBook({
 
     const selectedBook = await selectedBookPromise;
 
-    // move currentlyRead data to library and add enddate based on timestamps
+    // move to read data to currently reading and add startdate based on timestamps
     const currentTimestamp = new Date().toLocaleString();
     const finishedBook = {
       isbn13: selectedBook.isbn13,
@@ -115,7 +115,7 @@ export default function EditToReadBook({
       }
     });
 
-    const selectedBook = await selectedBookPromise;
+    const B = await selectedBookPromise;
     //delete currentread
     const configDelete = {
       url: "http://localhost:3001/toread",
