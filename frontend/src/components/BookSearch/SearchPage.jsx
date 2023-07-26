@@ -7,7 +7,7 @@ import BookSearch from './BookSearch.jsx';
 import { useNavigate } from "react-router-dom";
 
 
-export default function FeedPage() {
+export default function FeedPage({ handleLogout }) {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/feed");

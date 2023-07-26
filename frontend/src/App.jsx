@@ -50,7 +50,7 @@ export default function App() {
           <Route exact path="/" element={<LandingPage handleLogin={handleLogin} />} />
           <Route path="/feed" element={ isLoggedIn ? <FeedPage handleLogout={handleLogout}/> : <Navigate to ="/"/>} />
           <Route path="/register" element={<Register />} />
-          <Route path="/search" element={<SearchPage />} />
+          <Route path="/search" element={ isLoggedIn ? <SearchPage handleLogout={handleLogout}/> : <Navigate to ="/"/>} />
           <Route path="/profile" element={isLoggedIn ? <ProfilePage handleLogout={handleLogout}/> : <Navigate to ="/"/>} /> 
           <Route path="/reset-password" element={<ResetPage />} /> 
           <Route path="/reset-password-mail" element={<VerifyReset />} /> 
